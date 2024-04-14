@@ -1,5 +1,5 @@
-# 你需要: pip install requests tkhtmlview markdown
-# PS: 本文件的代码始终为最新版本
+# 安装依赖库: pip install requests tkhtmlview markdown
+# 本文件的代码始终为最新版本
 from datetime import datetime
 import importlib
 import json
