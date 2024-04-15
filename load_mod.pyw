@@ -20,7 +20,6 @@ import markdown
 from pip._internal import main as pip_main
 import io
 
-
 version = '6.2.0'  # app version
 
 file__name = f'logs/{datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d_%H-%M-%S")}_log.log'
@@ -275,6 +274,13 @@ def mod_run():
             logging.error('?这个mod后缀不是.zip，将不加载')
 
 
+def button_2_command():
+    root = tk.Toplevel(i)
+
+    root.title('设置')
+    root.mainloop()
+
+
 i.title('工具箱')
 
 mod_run()
@@ -285,6 +291,8 @@ logging.info(f'未正确加载模组:{mod_list_error},数量:{len(mod_list_error
 logging.info(f'合计:{len(mod_list) + len(mod_list_error)}个,正确加载模组数量:'
              f'{len(mod_list)},未正确加载模组数量:{len(mod_list_error)}')
 logging.info(f'-以下记录用户操作-')
+
+ttk.Button(i, text='设置', command=button_2_command)
 
 del error_1, error_1_j, error_name, mod_list, mod_list_error, mod_name, folder_path, logging_config
 
