@@ -11,7 +11,4 @@ exec(run)
 
 root.title('dev')
 
-try:
-    root.mainloop()
-except KeyboardInterrupt:
-    pass
+root.mainloop()
