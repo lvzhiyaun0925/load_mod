@@ -1,6 +1,8 @@
 请注意，**不要直接点击下载源码！！！！**，否则你100%会下载到半成品。
+
 安装依赖库:
-  pip install requests tkhtmlview markdown
+
+    pip install requests tkhtmlview markdown
 
 ## 简介：
 
