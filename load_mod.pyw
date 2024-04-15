@@ -21,7 +21,7 @@ from pip._internal import main as pip_main
 import io
 
 
-version = '6.0.2'  # app version
+version = '6.2.0'  # app version
 
 file__name = f'logs/{datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d_%H-%M-%S")}_log.log'
 
