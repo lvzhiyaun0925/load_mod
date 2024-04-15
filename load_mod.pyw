@@ -147,7 +147,7 @@ error_1_j = []
 error_name = []
 mod_list = []
 mod_list_error = []
-mod_name_not_error = []
+mod_name = []  # Doesn't count loading errors.
 
 folder_path = 'mods/'
 
@@ -201,7 +201,7 @@ def mod_run():
             path = modified_string
 
             try:
-                mod_name_not_error.append(path)
+                mod_name.append(path)
                 lack = list(set(mods.__command_libraries_name__) - set(os.listdir('mods/libraries/')))
                 logging.info(f'\t缺失库:{lack if lack is not [] else 0} 正在下载并安装')
                 for _ in lack:
@@ -218,6 +218,7 @@ def mod_run():
                     try:
                         os.mkdir(f'mods/libraries/'
                                  f'{mods.__command_libraries_name__[mods.__command_libraries_name__.index(_)]}')
+
                     except FileExistsError:
                         pass
 
@@ -286,7 +287,7 @@ logging.info(f'合计:{len(mod_list) + len(mod_list_error)}个,正确加载模�
              f'{len(mod_list)},未正确加载模组数量:{len(mod_list_error)}')
 logging.info(f'-以下记录用户操作-')
 
-del error_1, error_1_j, error_name, mod_list, mod_list_error, mod_name_not_error, folder_path, logging_config
+del error_1, error_1_j, error_name, mod_list, mod_list_error, mod_name, folder_path, logging_config
 
 try:
 
