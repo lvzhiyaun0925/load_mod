@@ -4,7 +4,6 @@ from tkinter import ttk  # It is recommended to use the TTK in Tkinter to achiev
 import logging  # Libraries that must be used.
 
 
-
 class Main(object):
 
     def __init__(self, *args):
