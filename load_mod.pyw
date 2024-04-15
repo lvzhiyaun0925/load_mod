@@ -199,18 +199,24 @@ def mod_run():
             path = modified_string
 
             try:
+
                 mod_name.append(path)
                 lack = list(set(mods.__command_libraries_name__) - set(os.listdir('mods/libraries/')))
-                logging.info(f'\t缺失库:{lack if lack is not [] else 0} 正在下载并安装')
+                logging.info('\t缺失库:{} 正在下载并安装'.format(lack)) if lack is not [] else (
+                    logging.info('\t缺失库: 无'))
+
                 for _ in lack:
                     __ = _
                     logging.warning(f'\t\t正在下载缺失库:{_}')
                     window = tk.Toplevel(i)
+
                     ttk.Label(window, text='我们正在下载mod所需的库(没响应正常，懒得多线程，请勿关闭)，请稍后...').pack()
+
                     progress_frame = ttk.Frame(window)
                     progress_frame.pack(pady=20)
                     progress_bar = ttk.Progressbar(progress_frame, orient='horizontal', length=200, mode='determinate')
                     progress_bar.pack(pady=10)
+
                     window.update()
 
                     try:
