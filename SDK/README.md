@@ -70,6 +70,6 @@ error_detailed, error_name, error_simplification: 记录错误的变量。当错
 
     错误详细和错误简化，可以在下面自行打印查看区别。
 
-loaded_mods: 用于记录成功加载模块的名称的列表。
+loaded_mods: 记录成功加载模块的名称的列表。
     
-    里面存放加载成功的列表。
+    存放加载模组成功的列表
