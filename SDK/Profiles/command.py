@@ -31,6 +31,6 @@ if program_name == '__main__.py':
 else:
     # Please do not change it unless necessary,
     # This is the argument passed by the class and function, and it should never be changed unless necessary.
-    __command_class_args__ = 'i, button_1, logging_config, error_1, error_name, error_1_j, mod_name_not_error'
+    __command_class_args__ = 'i, button_1, logging_config, error_1, error_name, error_1_j, mod_name'
 
 ...
