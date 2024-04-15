@@ -1,4 +1,5 @@
 # 不要更改变量名，SDK将不生效！！
+# 变量命名不好，见谅
 # 本文件的代码始终为最新版本
 from datetime import datetime
 import importlib
