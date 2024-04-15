@@ -36,6 +36,8 @@ ATTENTION!: SDK适用加载器版本: 5.9.0 - 6.2.0
 
 12. 如果要闭源，请前往 Profiles/command.py 并将__command_main__ 的值更改为你项目根目录中的 pyd 文件名字（无需后缀）。
 
+13. 如果你的模组使用了第三方库，必须将Profiles/command.py的__command_libraries__和__command_libraries_name__更改，具体用法看文件注释。
+
 **args 参数说明：**
 
 window_1: 添加和管理 GUI 组件的主窗口实例（如果不习惯可以改成root）。
