@@ -1,4 +1,4 @@
-# 安装依赖库: pip install requests tkhtmlview markdown
+# 不要更改变量名，SDK将不生效！！
 # 本文件的代码始终为最新版本
 from datetime import datetime
 import importlib
