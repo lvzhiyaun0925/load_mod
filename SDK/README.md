@@ -1,4 +1,4 @@
-**Modding SDK**（必读）：
+## Modding SDK（必读）：
 
 ATTENTION!: SDK适用加载器版本: 5.9.0 - 6.2.0
 
@@ -6,7 +6,7 @@ ATTENTION!: SDK适用加载器版本: 5.9.0 - 6.2.0
 
 1. 如果要记录模块操作日志，请使用中文。
 
-2. 必须更改 __introduction__ 和 __Supported_versions__ 并填写正确的值。
+2. 必须更改 ______introduction______ 和 ______Supported_versions______ 并填写正确的值。
 
    文件在 Profiles/illustrate.py。
 
@@ -34,9 +34,9 @@ ATTENTION!: SDK适用加载器版本: 5.9.0 - 6.2.0
 
 11. 你不需要任何构建工具来打包它，只需要将项目整个文件夹压缩成一个 zip 文件。
 
-12. 如果要闭源，请前往 Profiles/command.py 并将 __command_main__ 的值更改为你项目根目录中的 pyd 文件名字（无需后缀）。
+12. 如果要闭源，请前往 Profiles/command.py 并将 ______command_main______ 的值更改为你项目根目录中的 pyd 文件名字（无需后缀）。
 
-args 参数说明：
+**args 参数说明：**
 
 window_1: 添加和管理 GUI 组件的主窗口实例（如果不习惯可以改成root）。
 
