@@ -36,7 +36,7 @@ ATTENTION!: SDK适用加载器版本: 5.9.0 - 6.2.0
 
 12. 如果要闭源，请前往 Profiles/command.py 并将__command_main__ 的值更改为你项目根目录中的 pyd 文件名字（无需后缀）。
 
-13. 如果你的模组使用了第三方库，必须将Profiles/command.py的__command_libraries__和__command_libraries_name__更改，具体用法看文件注释。
+13. 如果你的模组使用了第三方库，必须将Profiles/command.py的__command_libraries__和__command_libraries_name__更改，告诉加载机需要下载哪些库。具体用法看文件注释。
 
 
 
