@@ -22,11 +22,11 @@ ATTENTION!: SDK适用加载器版本: 5.9.0 - 6.2.0
 
     则会抛出FileNotFoundError错误。
 
-7. 要调用本地模块/库，一定不要直接使用 `import library_name`，请使用：
+7. 要调用本地模块/库，一定不要直接使用 `import 模块`，请使用：
 
-    `from mods.temp.mods.<zip 名称> import repository_name`。
+    `from mods.temp.mods.<zip 名称> import <模块>`。
 
-    原理与第四个问题相似。
+    与第四个问题相似。
 
 9. 你可能需要你的模块名称稍微复杂一些，以避免与其他模块重名，因为
 
