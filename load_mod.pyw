@@ -32,9 +32,11 @@ logging_config = {
 }
 
 try:
+
     with open(logging_config['filename'], 'w'):
         pass
 except FileNotFoundError:
+
     os.mkdir('logs')
     with open(logging_config['filename'], 'w'):
         pass
@@ -112,12 +114,15 @@ def button_1_command(_id=0):
     try:
         r = requests.get('https://gitcode.net/lvzhiyuan_0925/my_version/-/raw/master/version.json')
         data = json.loads(r.text)['version']
+
         _version = int(re.sub(r'\.', '', version))  # Here it is removed with a regular expression".".
         _new_version = int(re.sub(r'\.', '', data))
         del r
+
         if _version == _new_version:
             ttk.Button(root, text=f'最新版本: 已经是最新版本', command=lambda: messagebox.
                        showinfo('提示', '目前最新版本')).pack()
+
         elif _version < _new_version:
             ttk.Button(root, text=f'最新版本: {data}(点击更新)', command=download).pack()
 
@@ -158,9 +163,9 @@ def mod_run():
         (ttk.Label(i, text='[###来自安装包的话###]\n'
                            '初次使用，是吧？\n我们已为你初始化，现在，在应用程序\n目录下，有一个mods文件夹，请把你要加载的模组丢进去(.zip)，'
                            '\n然后重启此应用(你可以在关于页面看到详细的教程(当然是最新版本的))\n'
+                           '初次加载模组可能会碰到下载必要库的情况，这属于正常现象，等待下载完成即可\n'
                            '等你放上模组并且加载成功后，你会在mods文件夹下见到一个temp文件夹，\n模组解压后的文件就放在temp/mods下\n'
-                           '但是他会在你每次启动应用时删了重新解压，所以，叫做temp文件夹。\n不要改模组的名称！！！！一定一定\n'
-                           '以至于为什么不能改嘛...自己学编程就懂了（太麻烦了一两句说不清）')
+                           '但是他会在你每次启动应用时删了重新解压，所以，叫做temp文件夹。\n不要改模组的名称！！！！一定一定')
          .pack())
         ttk.Button(i, text='退出（然后自己重新点开应用以加载模组）', command=lambda: sys.exit()).pack()
         i.mainloop()
@@ -197,16 +202,16 @@ def mod_run():
             entry_path = f'mods/temp/{file_name}/{mods.__command_main__}'
             modified_string = entry_path.replace('/', '.')
             path = modified_string
+            del modified_string
 
             try:
 
                 mod_name.append(path)
                 lack = list(set(mods.__command_libraries_name__) - set(os.listdir('mods/libraries/')))
-                logging.info('\t缺失库:{} 正在下载并安装'.format(lack)) if lack is not [] else (
-                    logging.info('\t缺失库: 无'))
+                logging.info('\t缺失库:{}'.format(f'{lack}, 正在下载并安装' if lack is not [] else '无'))
 
                 for _ in lack:
-                    __ = _
+                    __ = _  # preventDuplicateNames
                     logging.warning(f'\t\t正在下载缺失库:{_}')
                     window = tk.Toplevel(i)
 
@@ -220,6 +225,7 @@ def mod_run():
                     window.update()
 
                     try:
+
                         os.mkdir(f'mods/libraries/'
                                  f'{mods.__command_libraries_name__[mods.__command_libraries_name__.index(_)]}')
 
@@ -264,14 +270,15 @@ def mod_run():
                 logging.error(f'加载{entry_path}时出现错误')
 
                 error_name.append(path)
-                error_ = traceback.format_exc()
+                _error = traceback.format_exc()
                 error_1_j.append(str(error))
-                error_1.append(str(error_))
+                error_1.append(str(_error))
                 mod_list_error.append(f'{entry_path}')
                 logging.error(
-                    f'简化:{str(error)}   详细{str(error_)}\n-----------------------------------------------'
+                    f'简化:{str(error)}\n详细{str(_error)}\n'
+                    '------------------------------------'
                 )
-                messagebox.showinfo('加载mod失败', f'mod加载失败，以下为错误报告：\n{error_}\n\n已记录到log.log')
+                messagebox.showinfo('加载mod失败', f'mod加载失败，以下为错误报告：\n{_error}\n\n已记录到log.log')
 
         elif os.path.isfile(entry_path) and file_extension == '.false':
             logging.warning('这是一个被标记为不加载的mod，将不加载')
@@ -282,6 +289,8 @@ def mod_run():
 
 def button_2_command():
     root = tk.Toplevel(i)
+
+    ...
 
     root.title('设置')
     root.mainloop()
@@ -298,7 +307,7 @@ logging.info(f'合计:{len(mod_list) + len(mod_list_error)}个,正确加载模�
              f'{len(mod_list)},未正确加载模组数量:{len(mod_list_error)}')
 logging.info(f'-以下记录用户操作-')
 
-ttk.Button(i, text='设置', command=button_2_command)
+ttk.Button(i, text='设置', command=button_2_command).pack()
 
 del error_1, error_1_j, error_name, mod_list, mod_list_error, mod_name, folder_path, logging_config
 
