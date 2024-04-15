@@ -12,9 +12,9 @@ program_name = os.path.basename(sys.argv[0])
 # -foundation-
 
 # Tell the loader which third-party libraries need to be installed, and he will use pip to install him.
-__command_libraries__ = ['pyqt5', 'pygame']
+__command_libraries__ = []
 # The name at the time of import(THIRD PARTY LIBRARIES).
-__command_libraries_name__ = ['PyQt5', 'pygame']
+__command_libraries_name__ = []
 
 __command_main__ = 'Beta'  # Set the main program to main.
 __command_class__ = 'Main'  # Tell the mod loader which class it should execute(main program).
