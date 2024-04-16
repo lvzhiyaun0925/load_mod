@@ -4,7 +4,7 @@
 
 安装依赖库:
 
-    pip install requests tkhtmlview markdown
+    pip install requests tkhtmlview markdown ttkthemes
 
 ## 简介：
 
