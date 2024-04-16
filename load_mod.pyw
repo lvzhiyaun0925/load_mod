@@ -1,6 +1,6 @@
 # 不要更改变量名，SDK将不生效！！
 # 本文件的代码始终为最新版本
-from datetime import datetime
+import _tkinter
 import importlib
 import json
 import os
@@ -9,17 +9,19 @@ import sys
 import time
 import tkinter as tk
 import webbrowser
-from tkinter import ttk, messagebox
 import traceback
 import logging
 import zipfile
 import shutil
 import requests
-from tkhtmlview import HTMLLabel
 import markdown
-from pip._internal import main as pip_main
 import io
-
+import pickle
+from pip._internal import main as pip_main
+from tkinter import ttk, messagebox
+from tkhtmlview import HTMLLabel
+from datetime import datetime
+from ttkthemes import ThemedStyle
 version = '6.2.0'  # app version
 
 file__name = f'logs/{datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d_%H-%M-%S")}_log.log'
@@ -43,6 +45,21 @@ except FileNotFoundError:
 
 logging.basicConfig(filename=logging_config['filename'], level=logging_config['level'], format=logging_config['format'],
                     encoding='utf-8')
+
+
+drag_start_x, drag_start_y = 0, 0
+
+
+def on_drag_start(event):
+    global drag_start_x, drag_start_y
+    drag_start_x = event.x
+    drag_start_y = event.y
+
+
+def on_drag_motion(event, root):
+    x = root.winfo_x() + event.x - drag_start_x
+    y = root.winfo_y() + event.y - drag_start_y
+    root.geometry(f"+{x}+{y}")
 
 
 def button_1_command(_id=0):
@@ -93,12 +110,12 @@ def button_1_command(_id=0):
     except requests.exceptions.ConnectionError:
         label.config(text=f'获取失败:')
         tk.Label(root, text='网络错误', fg='red').pack()
-        ttk.Button(root, text='重试', command=lambda: (root.destroy(), button_1_command())).pack()
+        ttk.Button(root, text='重试', command=lambda: (root.destroy(), button_1_command()), style='Custom.TButton').pack()
         return
     except Exception as e:
         label.config(text=f'获取失败:')
         tk.Label(root, text=str(e), fg='red').pack()
-        ttk.Button(root, text='重试', command=lambda: (root.destroy(), button_1_command())).pack()
+        ttk.Button(root, text='重试', command=lambda: (root.destroy(), button_1_command()), style='Custom.TButton').pack()
         return
 
     data = r.text
@@ -121,19 +138,20 @@ def button_1_command(_id=0):
 
         if _version == _new_version:
             ttk.Button(root, text=f'最新版本: 已经是最新版本', command=lambda: messagebox.
-                       showinfo('提示', '目前最新版本')).pack()
+                       showinfo('提示', '目前最新版本'), style='Custom.TButton').pack()
 
         elif _version < _new_version:
-            ttk.Button(root, text=f'最新版本: {data}(点击更新)', command=download).pack()
+            ttk.Button(root, text=f'最新版本: {data}(点击更新)', command=download, style='Custom.TButton').pack()
 
         del _version, _new_version
     except requests.exceptions.ProxyError as e:
-        ttk.Button(root, text=f'最新版本: 获取错误:\n{e}').pack()
+        ttk.Button(root, text=f'最新版本: 获取错误:\n{e}', style='Custom.TButton').pack()
     except requests.exceptions.ConnectionError as e:
-        ttk.Button(root, text=f'最新版本: 获取错误:\n{e}').pack()
+        ttk.Button(root, text=f'最新版本: 获取错误:\n{e}', style='Custom.TButton').pack()
 
-    ttk.Button(root, text='使用教程', command=lambda: button_1_command(1)).pack()
-    ttk.Button(root, text='联系作者', command=lambda: webbrowser.open('mailto:lvzhiyuan0925@outlook.com')).pack()
+    ttk.Button(root, text='使用教程', command=lambda: button_1_command(1), style='Custom.TButton').pack()
+    ttk.Button(root, text='联系作者', command=lambda: webbrowser.open('mailto:lvzhiyuan0925@outlook.com'),
+               style='Custom.TButton').pack()
     label = tk.Label(root, text=f'当前版本: {version}', fg='blue', cursor='hand2')
     label.pack()
     label.bind('<Button-1>', lambda event: webbrowser.open(f'https://gitcode.net/lvzhiyuan_0925/m'
@@ -142,6 +160,20 @@ def button_1_command(_id=0):
 
 
 i = tk.Tk()
+try:
+    with open('data.pkl', 'rb') as __file:
+        try:
+            _data = pickle.load(__file)
+            ThemedStyle().set_theme(_data)
+            del _data
+
+        except (KeyError, EOFError, _tkinter.TclError):
+            ThemedStyle().set_theme('radiance')
+            open('data.pkl', 'w').close()
+
+except FileNotFoundError:
+    open('data.pkl', 'w').close()
+    ThemedStyle().set_theme('radiance')
 
 logging.info(f'-创建窗口-')
 
@@ -288,9 +320,62 @@ def mod_run():
 
 
 def button_2_command():
-    root = tk.Toplevel(i)
 
-    ...
+    def personalize():
+        root_2 = tk.Toplevel(root)
+
+        def close_window():
+            if messagebox.askyesno('是否保存', '是否保存'):
+                r()
+            else:
+                root_2.destroy()
+
+        def r():
+            with open('data.pkl', 'wb') as file:
+                _ = combobox.get()
+                pickle.dump(_, file)
+                del _
+            root_2.destroy()
+            if messagebox.askyesno('设置', '个性化功能需要重启应用以完成加载，是否重启?'):
+                os.startfile(os.path.abspath(__file__))
+                sys.exit()
+
+        ttk.Label(root_2, text='下拉选择界面样式').pack()
+        pixmap_themes = [
+            "arc",
+            "blue",
+            "clearlooks",
+            "elegance",
+            "kroc",
+            "plastik",
+            "radiance",
+            "ubuntu",
+            "winxpblue"
+        ]
+
+        combobox = ttk.Combobox(root_2, values=pixmap_themes)
+
+        with open('data.pkl', 'rb') as _file:
+            try:
+                data = pickle.load(_file)
+                if data in pixmap_themes:
+                    combobox.set(data)
+
+                else:
+                    combobox.set('radiance')
+
+            except (KeyError, EOFError):
+                combobox.set('radiance')
+        combobox.pack()
+
+        ttk.Button(root_2, text='确定', command=r).pack()
+        del pixmap_themes
+        root_2.title('设置-个性化')
+        root_2.protocol('WM_DELETE_WINDOW', close_window)
+        root_2.mainloop()
+
+    root = tk.Toplevel(i)
+    ttk.Button(root, text='个性化', command=personalize).pack()
 
     root.title('设置')
     root.mainloop()
