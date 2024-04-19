@@ -22,45 +22,40 @@ from tkinter import ttk, messagebox
 from tkhtmlview import HTMLLabel
 from datetime import datetime
 from ttkthemes import ThemedStyle
-version = '6.2.0'  # app version
 
-file__name = f'logs/{datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d_%H-%M-%S")}_log.log'
-
+version = '6.2.0'
+error_1 = []
+error_1_j = []
+error_name = []
+mod_list = []
+mod_list_error = []
+mod_name = []
+folder_path = 'mods/'
 logging_config = {
-    'filename': file__name,
+    'filename': f'logs/{datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d_%H-%M-%S")}_log.log',
     'level': logging.DEBUG,
     'format': '%(asctime)s - %(levelname)s - %(message)s',
     'encoding': 'utf-8'
 }
 
-try:
-
-    with open(logging_config['filename'], 'w'):
-        pass
-except FileNotFoundError:
-
-    os.mkdir('logs')
-    with open(logging_config['filename'], 'w'):
-        pass
+os.makedirs('logs', exist_ok=True)
+with open(logging_config['filename'], 'w'):
+    pass
 
 logging.basicConfig(filename=logging_config['filename'], level=logging_config['level'], format=logging_config['format'],
                     encoding='utf-8')
 
-
 drag_start_x, drag_start_y = 0, 0
-
 
 def on_drag_start(event):
     global drag_start_x, drag_start_y
     drag_start_x = event.x
     drag_start_y = event.y
 
-
 def on_drag_motion(event, root):
     x = root.winfo_x() + event.x - drag_start_x
     y = root.winfo_y() + event.y - drag_start_y
     root.geometry(f"+{x}+{y}")
-
 
 def button_1_command(_id=0):
     def download():
@@ -177,14 +172,7 @@ except FileNotFoundError:
 
 logging.info(f'-创建窗口-')
 
-error_1 = []
-error_1_j = []
-error_name = []
-mod_list = []
-mod_list_error = []
-mod_name = []  # Doesn't count loading errors.
 
-folder_path = 'mods/'
 
 
 def mod_run():
