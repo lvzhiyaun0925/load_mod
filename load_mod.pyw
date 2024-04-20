@@ -50,6 +50,7 @@ logging.basicConfig(filename=logging_config['filename'], level=logging_config['l
 drag_start_x, drag_start_y = 0, 0
 
 
+# 这两个为以后做铺垫
 def on_drag_start(event):
     global drag_start_x, drag_start_y
     drag_start_x = event.x
