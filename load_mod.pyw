@@ -28,15 +28,17 @@ error_name = []
 mod_list = []
 mod_list_error = []
 mod_name = []
-folder_path = 'mods/'
+mods_path = os.path.abspath('mods/')
+logs_path = os.path.abspath('logs/')
 logging_config = {
-    'filename': f'logs/{datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d_%H-%M-%S")}_log.log',
+    'filename': os.path.join(logs_path, datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d_%H-%M-%S"), '_log.log')
     'level': logging.DEBUG,
-    'format': '%(asctime)s - %(levelname)s - %(message)s',
+    'format': '[Development] %(asctime)s - %(levelname)s - %(message)s',
     'encoding': 'utf-8'
 }
 
-os.makedirs('logs', exist_ok=True)
+os.makedirs(logs_path, exist_ok=True)
+
 with open(logging_config['filename'], 'w'):
     pass
 
@@ -69,6 +71,7 @@ def _get(*args, **kwargs) -> requests.models.Response:
         return _get(*args, **kwargs, retry=retry)
 
 def button_1_command(_id=0):
+    """
     def download():
         if os.path.basename(sys.argv[0]) == 'load_mod.pyw':
             _r = requests.get('https://gitcode.net/lvzhiyuan_0925/my_version/-/raw/master/apps/load_mod.pyw')
@@ -88,6 +91,7 @@ def button_1_command(_id=0):
             return
 
         messagebox.showwarning('更新完成', '更新完成， 重启应用以完成更新')
+    """
     root = tk.Toplevel(i)
     if _id == 0:
         root.title("关于")
@@ -102,13 +106,13 @@ def button_1_command(_id=0):
     root.update()
     try:
         if _id == 0:
-            r = requests.get('https://gitcode.net/lvzhiyuan_0925/my_version/-/raw/master/version.json')
+            r = _get('https://gitcode.net/lvzhiyuan_0925/my_version/-/raw/master/version.json')
             data = json.loads(r.text)['version']
-            r = requests.get(f'https://gitcode.net/lvzhiyuan_0925/my_version/-/raw/master/{data}.md')
+            r = _get(f'https://gitcode.net/lvzhiyuan_0925/my_version/-/raw/master/{data}.md')
             label.destroy()
 
         elif _id == 1:
-            r = requests.get('https://gitcode.net/lvzhiyuan_0925/my_version/-/raw/master/tutorial.md')
+            r = _get('https://gitcode.net/lvzhiyuan_0925/my_version/-/raw/master/tutorial.md')
             label.destroy()
 
         else:
@@ -134,6 +138,7 @@ def button_1_command(_id=0):
     html_label.config(yscrollcommand=scrollbar.set)
     html_label.pack(fill="both", expand=True)
     del html_label, data
+    """
     try:
         r = requests.get('https://gitcode.net/lvzhiyuan_0925/my_version/-/raw/master/version.json')
         data = json.loads(r.text)['version']
@@ -154,13 +159,14 @@ def button_1_command(_id=0):
         ttk.Button(root, text=f'最新版本: 获取错误:\n{e}', style='Custom.TButton').pack()
     except requests.exceptions.ConnectionError as e:
         ttk.Button(root, text=f'最新版本: 获取错误:\n{e}', style='Custom.TButton').pack()
-
+    """
+    # 开发版并非正式版，若无必要，请勿更新！
     ttk.Button(root, text='使用教程', command=lambda: button_1_command(1), style='Custom.TButton').pack()
     ttk.Button(root, text='联系作者', command=lambda: webbrowser.open('mailto:lvzhiyuan0925@outlook.com'),
                style='Custom.TButton').pack()
-    label = tk.Label(root, text=f'当前版本: {version}', fg='blue', cursor='hand2')
+    label = tk.Label(root, text=f'当前版本: {version} 此版本为开发版，无法更新！', fg='blue', cursor='hand2')
     label.pack()
-    label.bind('<Button-1>', lambda event: webbrowser.open(f'https://gitcode.net/lvzhiyuan_0925/m'
+    # label.bind('<Button-1>', lambda event: webbrowser.open(f'https://gitcode.net/lvzhiyuan_0925/m'
                                                            f'y_version/-/blob/master/{version}.md'))
     root.mainloop()
 
@@ -183,14 +189,9 @@ except FileNotFoundError:
 
 logging.info(f'-创建窗口-')
 
-
-
-
 def mod_run():
-    global folder_path
-    try:
-        os.mkdir('mods')
-        os.mkdir('mods/libraries')
+    if not os.path.exists(mods_path):
+        os.makedirs(os.path.join(mods_path, 'libraries'), exist_ok=True)
         (ttk.Label(i, text='[###来自安装包的话###]\n'
                            '初次使用，是吧？\n我们已为你初始化，现在，在应用程序\n目录下，有一个mods文件夹，请把你要加载的模组丢进去(.zip)，'
                            '\n然后重启此应用(你可以在关于页面看到详细的教程(当然是最新版本的))\n'
@@ -200,20 +201,11 @@ def mod_run():
          .pack())
         ttk.Button(i, text='退出（然后自己重新点开应用以加载模组）', command=lambda: sys.exit()).pack()
         i.mainloop()
-
-    except FileExistsError:
-        pass
     button_1 = ttk.Button(text='关于', command=button_1_command)
     button_1.pack()
 
-    try:
-        # That is, each load will first empty the folder and re-decompress it
-        shutil.rmtree(f'mods/temp/mods')
-    except FileNotFoundError:
-
-        pass
-
-    folder_path = 'mods/'
+    if os.path.exists(os.path.join(mods_path, 'temp')):
+        shutil.rmtree(os.path.join(mods_path, 'temp'))
     for entry in os.listdir(folder_path):
         logging.info(f'扫描{entry}:')
         entry_path = os.path.join(folder_path, entry)
@@ -221,22 +213,18 @@ def mod_run():
 
         if file_extension == '.zip':
             logging.info(f'\t正在尝试加载({entry})')
-            logging.info(f'\t正在解压')
-            with zipfile.ZipFile(entry_path, 'r') as zip_file:
-                zip_file.extractall(f'mods/temp/{file_name}/')
-            logging.info(f'\t解压完成')
-            entry_path = f'mods/temp/{file_name}/Profiles/command'
-            modified_string = entry_path.replace('/', '.')
-            path = modified_string
-            mods = importlib.import_module(path)
-            logging.info('\t加载配置文件完成')
-            entry_path = f'mods/temp/{file_name}/{mods.__command_main__}'
-            modified_string = entry_path.replace('/', '.')
-            path = modified_string
-            del modified_string
-
+            logging.info('\t正在解压')
             try:
-
+                with zipfile.ZipFile(entry_path, 'r') as zip_file:
+                    zip_file.extractall(f'mods/temp/{file_name}/')
+                logging.info('\t解压完成')
+            except:
+                logging.error(f'\t{entry}解压失败！将不加载！')
+                continue
+            mods = importlib.import_module(f'{mods_path}.temp.{file_name}.Profiles.command')
+            logging.info('\t加载配置文件完成')
+            path = f'{mods_path}.temp.{file_name}.{mods.__command_main__}'
+            try:
                 mod_name.append(path)
                 lack = list(set(mods.__command_libraries_name__) - set(os.listdir('mods/libraries/')))
                 logging.info('\t缺失库:{}'.format(f'{lack}, 正在下载并安装' if lack is not [] else '无'))
