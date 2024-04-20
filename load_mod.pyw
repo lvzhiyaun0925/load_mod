@@ -1,5 +1,3 @@
-# 不要更改变量名，SDK将不生效！！
-# 本文件的代码始终为最新版本
 import _tkinter
 import importlib
 import json
@@ -23,7 +21,7 @@ from tkhtmlview import HTMLLabel
 from datetime import datetime
 from ttkthemes import ThemedStyle
 
-version = '6.2.0'
+version = '6.2.0 - beta'
 error_1 = []
 error_1_j = []
 error_name = []
@@ -56,6 +54,19 @@ def on_drag_motion(event, root):
     x = root.winfo_x() + event.x - drag_start_x
     y = root.winfo_y() + event.y - drag_start_y
     root.geometry(f"+{x}+{y}")
+
+def _get(*args, **kwargs) -> requests.models.Response:
+    url = args[0] if not "url" in kwargs else kwargs["url"]
+    retry = 0 if not "retry" in kwargs else kwargs["retry"]
+    if retry >= 3:
+        logging.error(f'错误，url "{url}" 获取失败，已重试三次！')
+        raise Exception(f'{url} 获取失败！')
+    try:
+        return requests.get(*args, **kwargs)
+    except:
+        del kwargs["retry"]
+        logging.warning(f'警告，获取url "{url}" 失败！已重试{retry+1}次！')
+        return _get(*args, **kwargs, retry=retry)
 
 def button_1_command(_id=0):
     def download():
