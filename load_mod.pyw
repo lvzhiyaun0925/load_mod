@@ -247,7 +247,7 @@ def mod_run():
                     try:
 
                         os.mkdir(f'mods/libraries/'
-                                 f'{mods.__command_libraries_name__[mods.__command_libraries_name__.index(_)]}')
+                                 f'{mods.__command_libraries__[mods.__command_libraries_name__.index(_)]}')
 
                     except FileExistsError:
                         pass
