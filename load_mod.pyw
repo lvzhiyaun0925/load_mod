@@ -166,8 +166,7 @@ def button_1_command(_id=0):
                style='Custom.TButton').pack()
     label = tk.Label(root, text=f'当前版本: {version} 此版本为开发版，无法更新！', fg='blue', cursor='hand2')
     label.pack()
-    # label.bind('<Button-1>', lambda event: webbrowser.open(f'https://gitcode.net/lvzhiyuan_0925/m'
-                                                           f'y_version/-/blob/master/{version}.md'))
+    # label.bind('<Button-1>', lambda event: webbrowser.open(f'https://gitcode.net/lvzhiyuan_0925/my_version/-/blob/master/{version}.md'))
     root.mainloop()
 
 
