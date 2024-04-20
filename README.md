@@ -5,4 +5,5 @@
     pip install requests tkhtmlview markdown ttkthemes
 
 ## 简介：
-这是开发测试版本，请不要直接download源码。
+这是一个简易的基于tkinter的mod加载机，或将考虑推出pyqt5版本。
+开发测试版本，请不要直接download源码。
